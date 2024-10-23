@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { loginSchema, registerSchema } from '../schemas';
 import { createAdminClient } from '@/lib/appwrite';
 import { ID } from 'node-appwrite';
-import { setCookie } from 'hono/cookie';
+import { deleteCookie, setCookie } from 'hono/cookie';
 import { AUTH_COOKIE } from '../constans';
 
 const app = new Hono()
@@ -36,6 +36,10 @@ const app = new Hono()
             maxAge: 60 * 60 * 24 * 30,
         });
 
+        return c.json({ success: true });
+    })
+    .post('/logout', c => {
+        deleteCookie(c, AUTH_COOKIE);
         return c.json({ success: true });
     });
 
