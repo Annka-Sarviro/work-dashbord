@@ -5,7 +5,7 @@ import { loginSchema, registerSchema } from '../schemas';
 import { createAdminClient } from '@/lib/appwrite';
 import { ID } from 'node-appwrite';
 import { deleteCookie, setCookie } from 'hono/cookie';
-import { AUTH_COOKIE } from '../constans';
+import { AUTH_COOKIE } from '../constants';
 import { sessionMiddleware } from '@/lib/session-middlewaare';
 
 const app = new Hono()
