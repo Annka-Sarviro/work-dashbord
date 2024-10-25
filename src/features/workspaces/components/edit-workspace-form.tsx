@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { createWorkspaceSchema } from '../schemas';
+import { updateWorkspaceSchema } from '../schemas';
 import { z } from 'zod';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import {
@@ -21,28 +21,34 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
-import { ImageIcon } from 'lucide-react';
+import { ArrowLeftIcon, ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { Workspace } from '../types';
+import { useUpdateWorkspace } from '../api/use-update-workspace';
 
-interface CreateWorkspaceFormProps {
+interface EditWorkspaceFormProps {
     onCancel?: () => void;
+    initialValues: Workspace;
 }
 
-export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
+export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceFormProps) => {
     const router = useRouter();
-    const { mutate, isPending } = useCreateWorkspace();
+    const { mutate, isPending } = useUpdateWorkspace();
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const form = useForm<z.infer<typeof createWorkspaceSchema>>({
-        resolver: zodResolver(createWorkspaceSchema),
-        defaultValues: { name: '' },
+    const form = useForm<z.infer<typeof updateWorkspaceSchema>>({
+        resolver: zodResolver(updateWorkspaceSchema),
+        defaultValues: {
+            ...initialValues,
+            image: initialValues.imageUrl ?? undefined,
+        },
     });
 
-    const onSubmit = (values: z.infer<typeof createWorkspaceSchema>) => {
+    const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
         const finalValues = { ...values, image: values.image instanceof File ? values.image : '' };
         mutate(
-            { form: finalValues },
+            { form: finalValues, param: { workspaceId: initialValues.$id } },
             {
                 onSuccess: ({ data }) => {
                     console.log('set');
@@ -64,8 +70,18 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 
     return (
         <Card className="w-full h-full border-none shadow-none">
-            <CardHeader className="flex p-7">
-                <CardTitle className="text-xl font-bold">Create new workspace</CardTitle>
+            <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
+                <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={
+                        onCancel ? onCancel : () => router.push(`/workspaces/${initialValues.$id}`)
+                    }
+                >
+                    <ArrowLeftIcon className="size-4 mr-2" />
+                    Back
+                </Button>
+                <CardTitle className="text-xl font-bold">{initialValues.name}</CardTitle>
             </CardHeader>
             <div className="px-7">
                 <DottedSeparator />
@@ -128,7 +144,6 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                                                     accept=".jpg, .png, .jpeg, .svg"
                                                     disabled={isPending}
                                                 />
-
                                                 {field.value ? (
                                                     <Button
                                                         type="button"
@@ -176,7 +191,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                                 Cancel
                             </Button>
                             <Button onClick={onCancel} type="submit" disabled={isPending} size="lg">
-                                Create Workspace
+                                Edit Workspace
                             </Button>
                         </div>
                     </form>
