@@ -16,7 +16,7 @@ import {
 import { DottedSeparator } from '@/components/dotted-separator';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useCreateWorkspace } from '../api/use-createWorkspace';
+import { useCreateWorkspace } from '../api/use-create-workspace';
 import { useRef } from 'react';
 import Image from 'next/image';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -38,7 +38,14 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 
     const onSubmit = (values: z.infer<typeof createWorkspaceSchema>) => {
         const finalValues = { ...values, image: values.image instanceof File ? values.image : '' };
-        mutate({ form: finalValues });
+        mutate(
+            { form: finalValues },
+            {
+                onSuccess: () => {
+                    form.reset();
+                },
+            }
+        );
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
