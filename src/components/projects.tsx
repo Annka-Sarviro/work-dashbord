@@ -19,14 +19,14 @@ export const Projects = () => {
     return (
         <div className="flex flex-col gap-y-2">
             <div className="flex justify-between items-center">
-                <p className=" text-xs uppercase text-neutral-500"> Projects</p>
+                <p className="text-xs uppercase text-neutral-500"> Projects</p>
                 <RiAddCircleFill
                     onClick={open}
                     className="size-5 text-neutral-500 cursor-pointer hover:opacity-75 transition"
                 />
             </div>
             {data?.documents.map(project => {
-                const href = `/workspaces/${workspaceId}/projects/${projectId}`;
+                const href = `/workspaces/${workspaceId}/projects/${project.$id}`;
                 const isActive = pathname === href;
 
                 return (
@@ -37,7 +37,11 @@ export const Projects = () => {
                                 isActive && 'bg-white shadow-sm hover:opacity-100 text-primary'
                             )}
                         >
-                            <ProjectAvatar image={project.imageUrl} name={project.name} />
+                            <ProjectAvatar
+                                image={project.imageUrl}
+                                name={project.name}
+                                fallbackClassName=""
+                            />
                             <span className="truncate">{project.name}</span>
                         </div>
                     </Link>

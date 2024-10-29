@@ -3,6 +3,7 @@ import { InferRequestType, InferResponseType } from 'hono';
 
 import { toast } from 'sonner';
 import { client } from '@/lib/rpc';
+import { useRouter } from 'next/navigation';
 
 type ResponseType = InferResponseType<
     (typeof client.api.workspaces)[':workspaceId']['reset-invite-code']['$post'],
@@ -14,6 +15,7 @@ type RequestType = InferRequestType<
 
 export const useResetInviteCode = () => {
     const queryClient = useQueryClient();
+    const router = useRouter();
     const mutation = useMutation<ResponseType, Error, RequestType>({
         mutationFn: async ({ param }) => {
             const response = await client.api.workspaces[':workspaceId']['reset-invite-code'].$post(
@@ -26,6 +28,7 @@ export const useResetInviteCode = () => {
         },
         onSuccess: ({ data }) => {
             toast.success('Invite code reset');
+            router.refresh();
             queryClient.invalidateQueries({ queryKey: ['workspaces'] });
             queryClient.invalidateQueries({ queryKey: ['workspace', data.$id] });
         },
