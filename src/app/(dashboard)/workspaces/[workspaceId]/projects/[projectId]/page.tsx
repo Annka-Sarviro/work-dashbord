@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { getCurrent } from '@/features/auth/queries';
 import { ProjectAvatar } from '@/features/projects/components/project-avatar';
 import { getProject } from '@/features/projects/queries';
+import { TaskViewSwitcher } from '@/features/tasks/components/tesk-view-switcher';
 import { EditIcon } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -27,7 +28,7 @@ const ProjectIdPage = async ({ params }: ProjectIdPageProps) => {
 
     return (
         <div className="flex flex-col gap-y-4">
-            <div className="flex items-center justify-between ">
+            <div className="flex items-center justify-between">
                 <div className="flex items-center gap-x-2">
                     <ProjectAvatar
                         name={initialValues?.name}
@@ -48,6 +49,7 @@ const ProjectIdPage = async ({ params }: ProjectIdPageProps) => {
                     </Button>
                 </div>
             </div>
+            <TaskViewSwitcher />
         </div>
     );
 };
