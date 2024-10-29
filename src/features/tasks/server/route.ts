@@ -15,7 +15,7 @@ import { MemberRole } from '@/features/members/types';
 import { generateInviteCode } from '@/lib/utils';
 import { getMember } from '@/features/members/utils';
 import { z } from 'zod';
-import { TaskStatus } from '../type';
+import { Task, TaskStatus } from '../type';
 import { createAdminClient } from '@/lib/appwrite';
 import { Project } from '@/features/projects/types';
 // import { Workspace } from '../types';
@@ -80,7 +80,7 @@ const app = new Hono()
                 query.push(Query.equal('name', search));
             }
 
-            const tasks = await databases.listDocuments(DATABASE_ID, TASKS_ID, query);
+            const tasks = await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, query);
             const projectIds = tasks.documents.map(task => task.projectId);
             const assigneeIds = tasks.documents.map(task => task.assigneeId);
 
