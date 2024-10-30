@@ -56,17 +56,17 @@ export const getProject = async ({ projectId }: { projectId: string }) => {
     }
 };
 
-export const getWorkspaceInfo = async ({ workspaceId }: { workspaceId: string }) => {
-    try {
-        const { databases } = await createSessionClient();
+// export const getWorkspaceInfo = async ({ workspaceId }: { workspaceId: string }) => {
+//     try {
+//         const { databases } = await createSessionClient();
 
-        const workspace = await databases.getDocument<Project>(
-            DATABASE_ID,
-            WORKSPACES_ID,
-            workspaceId
-        );
-        return { name: workspace.name };
-    } catch (error) {
-        return null;
-    }
-};
+//         const workspace = await databases.getDocument<Project>(
+//             DATABASE_ID,
+//             WORKSPACES_ID,
+//             workspaceId
+//         );
+//         return { name: workspace.name };
+//     } catch (error) {
+//         return null;
+//     }
+// };
