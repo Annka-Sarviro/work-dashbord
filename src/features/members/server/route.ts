@@ -7,7 +7,7 @@ import { getMember } from '../utils';
 import { DATABASE_ID, MEMBER_ID } from '@/config';
 import { Query } from 'node-appwrite';
 import { error } from 'console';
-import { MemberRole } from '../types';
+import { Member, MemberRole } from '../types';
 
 const app = new Hono()
     .get(
@@ -30,7 +30,7 @@ const app = new Hono()
                 return c.json({ error: 'Unauthorized' }, 401);
             }
 
-            const members = await databases.listDocuments(DATABASE_ID, MEMBER_ID, [
+            const members = await databases.listDocuments<Member>(DATABASE_ID, MEMBER_ID, [
                 Query.equal('workspaceId', workspaceId),
             ]);
 

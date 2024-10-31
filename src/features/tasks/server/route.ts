@@ -285,7 +285,7 @@ const app = new Hono()
             const workspaceId = workspaceIds.values().next().value;
 
             if (!workspaceId) {
-                return c.json({ error: 'Unauthorized' }, 401);
+                return c.json({ error: 'Workspace id is required' }, 400);
             }
 
             const member = await getMember({
