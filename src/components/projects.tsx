@@ -5,7 +5,7 @@ import { ProjectAvatar } from '@/features/projects/components/project-avatar';
 import { useCreateProjectModal } from '@/features/projects/hooks/use-create-project-modal';
 import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 import { cn } from '@/lib/utils';
-import { dataTagSymbol } from '@tanstack/react-query';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { RiAddCircleFill } from 'react-icons/ri';
@@ -14,7 +14,7 @@ export const Projects = () => {
     const pathname = usePathname();
     const { open } = useCreateProjectModal();
     const workspaceId = useWorkspaceId();
-    const projectId = null;
+
     const { data } = useGetProjects({ workspaceId });
     return (
         <div className="flex flex-col gap-y-2">
@@ -26,7 +26,7 @@ export const Projects = () => {
                 />
             </div>
             {data?.documents.map(project => {
-                const href = `/workspaces/${workspaceId}/projects/${project.$id}`;
+                const href = `/workspaces/${workspaceId}/projects/${project.$id}?projectId=${project.$id}`;
                 const isActive = pathname === href;
 
                 return (
