@@ -22,12 +22,19 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
     const [value, setValue] = useState(task.description);
 
     const handleSave = () => {
-        mutate({
-            json: { description: value },
-            param: {
-                taskId: task.$id,
+        mutate(
+            {
+                json: { description: value },
+                param: {
+                    taskId: task.$id,
+                },
             },
-        });
+            {
+                onSuccess: () => {
+                    setIsEditing(false);
+                },
+            }
+        );
     };
 
     return (

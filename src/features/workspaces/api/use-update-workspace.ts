@@ -13,7 +13,7 @@ type RequestType = InferRequestType<(typeof client.api.workspaces)[':workspaceId
 
 export const useUpdateWorkspace = () => {
     const queryClient = useQueryClient();
-    const router = useRouter();
+
     const mutation = useMutation<ResponseType, Error, RequestType>({
         mutationFn: async ({ form, param }) => {
             const response = await client.api.workspaces[':workspaceId'].$patch({ form, param });
@@ -24,7 +24,7 @@ export const useUpdateWorkspace = () => {
         },
         onSuccess: ({ data }) => {
             toast.success('Workspace updated');
-            router.refresh();
+
             queryClient.invalidateQueries({ queryKey: ['workspaces'] });
             queryClient.invalidateQueries({ queryKey: ['workspace', data.$id] });
         },
