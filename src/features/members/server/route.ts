@@ -40,7 +40,7 @@ const app = new Hono()
 
                     return {
                         ...member,
-                        name: user.name,
+                        name: user.name || user.name,
                         email: user.email,
                     };
                 })
