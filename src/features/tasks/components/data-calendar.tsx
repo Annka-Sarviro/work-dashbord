@@ -12,7 +12,7 @@ import { EventCard } from './event-card';
 import { CustomToolbar } from './custom-toolbar';
 
 const locales = {
-    'en-Us': enUS,
+    uk,
 };
 
 const localizer = dateFnsLocalizer({
